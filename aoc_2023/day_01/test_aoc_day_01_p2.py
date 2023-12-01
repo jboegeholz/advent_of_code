@@ -60,6 +60,7 @@ def test_last_digit_or_naw():
     calibration_value = int(calibration_value_str)
     assert 9 == calibration_value
 
+
 def test_day_2():
     line = "two1nine"
     calibration_value_str = ""
@@ -67,6 +68,7 @@ def test_day_2():
     calibration_value_str += get_last_digit(line[::-1])
     calibration_value = int(calibration_value_str)
     assert 29 == calibration_value
+
 
 @pytest.mark.parametrize(
     "data, expected",
@@ -88,6 +90,7 @@ def test_first_last_digit(data, expected):
     calibration_value_str += get_last_digit(line)
     calibration_value = int(calibration_value_str)
     assert calibration_value == expected
+
 
 def get_first_digit(line):
     first_digit = ""
@@ -111,6 +114,7 @@ def get_first_digit(line):
     else:
         return first_naw
 
+
 def get_last_digit(line):
     last_digit = ""
     last_digit_pos = 1000
@@ -132,9 +136,6 @@ def get_last_digit(line):
         return last_digit
     else:
         return last_naw
-
-
-
 
 
 def test_calculate_calibration_values():
