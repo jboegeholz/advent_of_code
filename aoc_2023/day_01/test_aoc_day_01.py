@@ -32,6 +32,25 @@ def test_third_line():
 
 def test_fourth_line():
     line = "treb7uchet"
+    calibration_value_str = get_calibration_string(line)
+    assert calibration_value_str == "77"
+
+def test_with_test_data():
+    sum_of_calibration_value = 0
+    for line in data.split("\n"):
+        sum_of_calibration_value += int(get_calibration_string(line))
+
+    assert sum_of_calibration_value == 142
+
+def test_with_real_data():
+    with open("aoc_data_01.txt", "r") as f:
+        data = f.read()
+    sum_of_calibration_value = 0
+    for line in data.split("\n"):
+        sum_of_calibration_value += int(get_calibration_string(line))
+
+    assert sum_of_calibration_value == 55123
+def get_calibration_string(line):
     calibration_value_str = ""
     for c in line:
         if c.isdigit():
@@ -41,4 +60,4 @@ def test_fourth_line():
         if c.isdigit():
             calibration_value_str += c
             break
-    assert calibration_value_str == "77"
+    return calibration_value_str
