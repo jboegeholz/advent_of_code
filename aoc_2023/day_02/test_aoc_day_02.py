@@ -60,6 +60,8 @@ def test_check_possible():
     assert blue_possible
 
 def test_sum_of_game_ids():
+    with open("aoc_data_02.txt", "r") as f:
+        data = f.read()
     sum_of_possible_games_ids = 0
     for line in data.split("\n"):
         red_possible = True
@@ -84,7 +86,7 @@ def test_sum_of_game_ids():
                         blue_possible = False
         if red_possible and green_possible and blue_possible:
             sum_of_possible_games_ids += int(game_id)
-    assert sum_of_possible_games_ids == 8
+    assert sum_of_possible_games_ids == 2476
 
 
 
