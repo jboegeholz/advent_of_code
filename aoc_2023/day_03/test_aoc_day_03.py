@@ -1,13 +1,15 @@
-data = """467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598.."""
+data = """............
+.467..114...
+....*.......
+...35..633..
+.......#....
+.617*.......
+......+.58..
+...592......
+.......755..
+....$.*.....
+..664.598...
+............"""
 
 test_data = """...
 .1.
@@ -92,17 +94,17 @@ def test_find_two_part_numbers():
     assert part_numbers == ['123', '234']
 
 
-test_data_4 = """..........
-...........
-..123.234..
-...........
-..........."""
+test_data_4 = """.....
+.....
+..12.
+..*..
+....."""
 
 
 def test_is_part_number():
     with open("aoc_data_03.txt", "r") as f:
         real_data = f.read()
-    #real_data = test_data_4
+    real_data = test_data_4
     part_numbers = []
     data_array = []
     for line in real_data.splitlines():
@@ -111,33 +113,15 @@ def test_is_part_number():
             line_array.append(c)
         data_array.append(line_array)
 
-    for i in range(0, len(data_array)-1):
+    for i in range(0, len(data_array)):
         part_number = ""
-        for j in range(0, len(data_array[i]) - 1):
+        for j in range(0, len(data_array[i])):
             if data_array[i][j].isdigit():
                 part_number += data_array[i][j]
             else:
                 if part_number:
                     part_number_length = len(part_number)
                     is_part_number = False
-                    if part_number_length == 1:
-                        # search perimeter 8
-                        if is_symbol(data_array[i - 1][j - 2]):
-                            is_part_number = True
-                        if is_symbol(data_array[i - 1][j - 1] ):
-                            is_part_number = True
-                        if is_symbol(data_array[i - 1][j] ):
-                            is_part_number = True
-                        if is_symbol(data_array[i][j - 2] ):
-                            is_part_number = True
-                        if is_symbol(data_array[i][j] ):
-                            is_part_number = True
-                        if is_symbol(data_array[i + 1][j - 2] ):
-                            is_part_number = True
-                        if is_symbol(data_array[i + 1][j - 1] ):
-                            is_part_number = True
-                        if is_symbol(data_array[i + 1][j] ):
-                            is_part_number = True
                     if part_number_length == 2:
                         if is_symbol(data_array[i - 1][j - 2] ):
                             is_part_number = True
@@ -149,11 +133,11 @@ def test_is_part_number():
                             is_part_number = True
                         if is_symbol(data_array[i][j] ):
                             is_part_number = True
-                        if is_symbol(data_array[i + 1][j - 2] ):
+                        if is_symbol(data_array[i + 1][j - 2]):
                             is_part_number = True
-                        if is_symbol(data_array[i + 1][j - 1] ):
+                        if is_symbol(data_array[i + 1][j - 1]):
                             is_part_number = True
-                        if is_symbol(data_array[i + 1][j] ):
+                        if is_symbol(data_array[i + 1][j]):
                             is_part_number = True
                         # search perimeter 10
                         if is_symbol(data_array[i-1][j - 3] ):
@@ -180,11 +164,11 @@ def test_is_part_number():
                         if is_symbol(data_array[i + 1][j] ):
                             is_part_number = True
                             # search perimeter 10
-                        if is_symbol(data_array[i - 1][j - 4] ):
+                        if is_symbol(data_array[i - 1][j - 3] ):
                             is_part_number = True
-                        if is_symbol(data_array[i][j - 4] ):
+                        if is_symbol(data_array[i][j - 3] ):
                             is_part_number = True
-                        if is_symbol(data_array[i + 1][j - 4] ):
+                        if is_symbol(data_array[i + 1][j - 3] ):
                             is_part_number = True
                         # search perimeter 12
                         if is_symbol(data_array[i-1][j - 4] ):
@@ -195,7 +179,7 @@ def test_is_part_number():
                             is_part_number = True
                     if is_part_number:
                         part_numbers.append(part_number)
-                        part_number = ""
+                    part_number = ""
     sum_of_part_numbers = 0
     for number in part_numbers:
         sum_of_part_numbers += int(number)
@@ -203,11 +187,10 @@ def test_is_part_number():
 
 
 def test_is_symbol():
+    symbols = "!§$%&/()=?@#*-"
+    for symbol in symbols:
+        assert is_symbol(symbol)
 
-    symbol = "0"
-    my_symbol = is_symbol(symbol)
-
-    assert my_symbol
 
 
 def is_symbol(symbol):
