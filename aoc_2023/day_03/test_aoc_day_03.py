@@ -92,11 +92,11 @@ def test_find_two_part_numbers():
     assert part_numbers == ['123', '234']
 
 
-test_data_4 = """.....
-.....
-..12..
-.*...
-....."""
+test_data_4 = """.......
+........
+..123...
+........
+........"""
 
 
 def test_is_part_number():
@@ -117,7 +117,7 @@ def test_is_part_number():
                 if part_number:
                     part_number_length = len(part_number)
                     is_part_number = False
-                    if part_number_length >= 1:
+                    if part_number_length == 1:
                         # search perimeter 8
                         if data_array[i - 1][j - 2] != '.':
                             is_part_number = True
@@ -135,7 +135,23 @@ def test_is_part_number():
                             is_part_number = True
                         if data_array[i + 1][j] != '.':
                             is_part_number = True
-                    if part_number_length >= 2:
+                    if part_number_length == 2:
+                        if data_array[i - 1][j - 2] != '.':
+                            is_part_number = True
+                        if data_array[i - 1][j - 1] != '.':
+                            is_part_number = True
+                        if data_array[i - 1][j] != '.':
+                            is_part_number = True
+                        if data_array[i][j - 2] != '.':
+                            is_part_number = True
+                        if data_array[i][j] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j - 2] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j - 1] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j] != '.':
+                            is_part_number = True
                         # search perimeter 10
                         if data_array[i-1][j - 3] != '.':
                             is_part_number = True
@@ -144,6 +160,29 @@ def test_is_part_number():
                         if data_array[i+1][j - 3] != '.':
                             is_part_number = True
                     if part_number_length == 3:
+                        if data_array[i - 1][j - 2] != '.':
+                            is_part_number = True
+                        if data_array[i - 1][j - 1] != '.':
+                            is_part_number = True
+                        if data_array[i - 1][j] != '.':
+                            is_part_number = True
+                        if data_array[i][j - 2] != '.':
+                            is_part_number = True
+                        if data_array[i][j] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j - 2] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j - 1] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j] != '.':
+                            is_part_number = True
+                            # search perimeter 10
+                        if data_array[i - 1][j - 4] != '.':
+                            is_part_number = True
+                        if data_array[i][j - 4] != '.':
+                            is_part_number = True
+                        if data_array[i + 1][j - 4] != '.':
+                            is_part_number = True
                         # search perimeter 12
                         if data_array[i-1][j - 3] != '.':
                             is_part_number = True
@@ -155,7 +194,7 @@ def test_is_part_number():
                         part_numbers.append(part_number)
                         part_number = ""
 
-    assert part_numbers == ["12"]
+    assert part_numbers == ["123"]
 
 def test_sum_partnumbers():
     pass
