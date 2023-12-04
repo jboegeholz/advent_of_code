@@ -28,3 +28,33 @@ def test_numbers_to_list():
 
     assert winning_numbers == ['41', '48', '83', '86', '17']
     assert your_numbers == ['83', '86', '6', '31', '17', '9', '48', '53']
+
+def test_get_wins():
+    line = "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53"
+    wins = 0
+    numbers = line.split(": ")[1]
+    winning_numbers = numbers.split(" | ")[0].replace("  ", " ").split(" ")
+    your_numbers = numbers.split(" | ")[1].replace("  ", " ").split(" ")
+    for your_number in your_numbers:
+        if your_number in winning_numbers:
+            wins +=1
+    assert wins == 4
+    assert 2**(wins-1) == 8
+
+def test_get_total_points():
+    lines = data.split("\n")
+    total_points = 0
+    for line in lines:
+        wins = 0
+        numbers = line.split(": ")[1]
+        winning_numbers = numbers.split(" | ")[0].replace("  ", " ").split(" ")
+        your_numbers = numbers.split(" | ")[1].replace("  ", " ").split(" ")
+        for your_number in your_numbers:
+            if your_number in winning_numbers:
+                wins +=1
+        if wins > 0:
+            points = 2**(wins-1)
+            total_points += points
+    assert total_points == 13
+
+
