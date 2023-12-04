@@ -57,4 +57,22 @@ def test_get_total_points():
             total_points += points
     assert total_points == 13
 
+def test_get_total_points_from_real_data():
+    with open("aoc_data_04.txt", "r") as f:
+        real_data = f.read()
+    lines = real_data.split("\n")
+    total_points = 0
+    for line in lines:
+        wins = 0
+        numbers = line.split(": ")[1]
+        winning_numbers = numbers.split(" | ")[0].replace("  ", " ").split(" ")
+        your_numbers = numbers.split(" | ")[1].replace("  ", " ").split(" ")
+        for your_number in your_numbers:
+            if your_number in winning_numbers:
+                wins +=1
+        if wins > 0:
+            points = 2**(wins-1)
+            total_points += points
+    assert total_points == 22897
+
 
