@@ -7,6 +7,8 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
 
 
 def test_get_total_points():
+    with open("aoc_data_04.txt", "r") as f:
+        data = f.read()
     lines = data.split("\n")
     cardsnwins = [
         # card, no of cards, wins,
@@ -20,14 +22,15 @@ def test_get_total_points():
             if your_number in winning_numbers:
                 wins += 1
         cardsnwins.append([card_no+1, 1, wins])
+
     # postprocessing
-    for j in range(0, len(cardsnwins)-3):
+    for j in range(0, len(cardsnwins)-2):
         for i in range(2+j, cardsnwins[1+j][2]+2+j):
             cardsnwins[i][1] += cardsnwins[1+j][1]
     sum_of_cards = 0
     for card in cardsnwins:
         sum_of_cards += card[1]
-    assert sum_of_cards == 30
+    assert sum_of_cards == 5095824
 
 
 def test_wins():
