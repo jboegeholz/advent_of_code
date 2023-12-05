@@ -63,12 +63,13 @@ def test_get_destination_start_range():
 )
 def test_seed_to_soil(seed, expected_soil):
     lines = data.split("\n\n")
+    # create map
     seed_to_soil_entry = lines[1].split("\n")
     seed_to_soil_data = seed_to_soil_entry[1:]
     seed_to_soil_map = []
     for line in seed_to_soil_data:
         seed_to_soil_map.append([int(s) for s in line.split(" ")])
-
+    # get mapping seed -> soil
     for sts in seed_to_soil_map:
         destination_start = sts[0]
         source_start = sts[1]
