@@ -85,7 +85,6 @@ def test_seed_to_soil(seed, expected_soil):
 
 
 
-
 def test_seed_to_location():
     with open("aoc_data_05.txt", "r") as f:
         real_data = f.read()
@@ -139,11 +138,5 @@ def create_map(lines, index):
         _map.append([int(s) for s in line.split(" ")])
     return _map
 
-
-def test_get_total_points_from_real_data():
-    with open("aoc_data_05.txt", "r") as f:
-        real_data = f.read()
-
-    assert True
 
 

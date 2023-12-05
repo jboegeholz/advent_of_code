@@ -63,22 +63,19 @@ def test_seed_to_location():
     humidity_to_location_map = create_map(lines, 7)
 
     lowest_location = 2**32
-    new_seeds = []
+
     for i, seed in enumerate(seeds[::2]):
         seed_range = seeds[2 * i + 1]
         for j in range(seed, seed + seed_range):
-            new_seeds.append(j)
-
-    for seed in new_seeds:
-    # get mapping
-        soil = get_mapping(seed, seed_to_soil_map)
-        fertilizer = get_mapping(soil, soil_to_fertilizer_map)
-        water = get_mapping(fertilizer, fertilizer_to_water_map)
-        light = get_mapping(water, water_to_light_map)
-        temperature = get_mapping(light, light_to_temperature_map)
-        humidity = get_mapping(temperature, temperature_to_humidity_map)
-        location = get_mapping(humidity, humidity_to_location_map)
-        if location < lowest_location:
-            lowest_location = location
+            # get mapping
+            soil = get_mapping(j, seed_to_soil_map)
+            fertilizer = get_mapping(soil, soil_to_fertilizer_map)
+            water = get_mapping(fertilizer, fertilizer_to_water_map)
+            light = get_mapping(water, water_to_light_map)
+            temperature = get_mapping(light, light_to_temperature_map)
+            humidity = get_mapping(temperature, temperature_to_humidity_map)
+            location = get_mapping(humidity, humidity_to_location_map)
+            if location < lowest_location:
+                lowest_location = location
 
     assert lowest_location == 46
