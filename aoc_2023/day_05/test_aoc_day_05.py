@@ -97,18 +97,9 @@ def test_seed_to_soil(seed, expected_fertilizer):
     lines = data.split("\n\n")
     # create map
     # seed -> soil
-    seed_to_soil_entry = lines[1].split("\n")
-    seed_to_soil_data = seed_to_soil_entry[1:]
-    seed_to_soil_map = []
-    for line in seed_to_soil_data:
-        seed_to_soil_map.append([int(s) for s in line.split(" ")])
-
+    seed_to_soil_map = create_map(lines, 1)
     # soil to fertilizer
-    soil_to_fertilizer_entry = lines[2].split("\n")
-    soil_to_fertilizer_data = soil_to_fertilizer_entry[1:]
-    soil_to_fertilizer_map = []
-    for line in soil_to_fertilizer_data:
-        soil_to_fertilizer_map.append([int(s) for s in line.split(" ")])
+    soil_to_fertilizer_map = create_map(lines, 2)
 
     # get mapping seed -> soil
     for sts in seed_to_soil_map:
@@ -134,6 +125,16 @@ def test_seed_to_soil(seed, expected_fertilizer):
             fertilizer = soil
 
     assert fertilizer == expected_fertilizer
+
+
+def create_map(lines, index):
+    _map = []
+    _entry = lines[index].split("\n")
+    _data = _entry[1:]
+    for line in _data:
+        _map.append([int(s) for s in line.split(" ")])
+    return _map
+
 
 def test_get_total_points_from_real_data():
     with open("aoc_data_05.txt", "r") as f:
