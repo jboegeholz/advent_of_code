@@ -82,6 +82,59 @@ def test_seed_to_soil(seed, expected_soil):
             soil = seed
     assert soil == expected_soil
 
+
+@pytest.mark.parametrize(
+    "seed, expected_fertilizer",
+    [
+        (79, 81),
+        (14, 53),
+        (55, 57),
+        (13, 52),
+
+    ]
+)
+def test_seed_to_soil(seed, expected_fertilizer):
+    lines = data.split("\n\n")
+    # create map
+    # seed -> soil
+    seed_to_soil_entry = lines[1].split("\n")
+    seed_to_soil_data = seed_to_soil_entry[1:]
+    seed_to_soil_map = []
+    for line in seed_to_soil_data:
+        seed_to_soil_map.append([int(s) for s in line.split(" ")])
+
+    # soil to fertilizer
+    soil_to_fertilizer_entry = lines[2].split("\n")
+    soil_to_fertilizer_data = soil_to_fertilizer_entry[1:]
+    soil_to_fertilizer_map = []
+    for line in soil_to_fertilizer_data:
+        soil_to_fertilizer_map.append([int(s) for s in line.split(" ")])
+
+    # get mapping seed -> soil
+    for sts in seed_to_soil_map:
+        destination_start = sts[0]
+        source_start = sts[1]
+        range = sts[2]
+        if source_start <= seed <= source_start + range:
+            offset = seed - sts[1]
+            soil = destination_start + offset
+            break
+        else:
+            soil = seed
+
+    for sts in soil_to_fertilizer_map:
+        destination_start = sts[0]
+        source_start = sts[1]
+        range = sts[2]
+        if source_start <= soil <= source_start + range:
+            offset = soil - sts[1]
+            fertilizer = destination_start + offset
+            break
+        else:
+            fertilizer = soil
+
+    assert fertilizer == expected_fertilizer
+
 def test_get_total_points_from_real_data():
     with open("aoc_data_05.txt", "r") as f:
         real_data = f.read()
