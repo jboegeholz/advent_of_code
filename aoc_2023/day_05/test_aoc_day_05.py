@@ -1,3 +1,5 @@
+import pytest
+
 data = """seeds: 79 14 55 13
 
 seed-to-soil map:
@@ -49,9 +51,17 @@ def test_get_destination_start_range():
 
     assert seed_to_soil_map == [[50, 98, 2], [52, 50, 48]]
 
+@pytest.mark.parametrize(
+    "seed, expected_soil",
+    [
+        (98, 50),
+        (79, 81),
+        (55, 57),
+        (13, 13),
 
-def test_seed_to_soil():
-    seed = 98
+    ]
+)
+def test_seed_to_soil(seed, expected_soil):
     lines = data.split("\n\n")
     seed_to_soil_entry = lines[1].split("\n")
     seed_to_soil_data = seed_to_soil_entry[1:]
@@ -69,7 +79,7 @@ def test_seed_to_soil():
             break
         else:
             soil = seed
-    assert soil == 50
+    assert soil == expected_soil
 
 def test_get_total_points_from_real_data():
     with open("aoc_data_05.txt", "r") as f:
