@@ -120,6 +120,37 @@ def test_seed_to_location(seed, exp_soil, exp_fert, exp_wat, exp_light, exp_temp
     assert location == exp_loc
 
 
+def test_seed_to_location():
+    with open("aoc_data_05.txt", "r") as f:
+        real_data = f.read()
+    # get seeds
+    lines = real_data.split("\n\n")
+    seeds = lines[0].split(": ")[1].split(" ")
+    seeds = [int(s) for s in seeds]
+    # create maps
+    seed_to_soil_map = create_map(lines, 1)
+    soil_to_fertilizer_map = create_map(lines, 2)
+    fertilizer_to_water_map = create_map(lines, 3)
+    water_to_light_map = create_map(lines, 4)
+    light_to_temperature_map = create_map(lines, 5)
+    temperature_to_humidity_map = create_map(lines, 6)
+    humidity_to_location_map = create_map(lines, 7)
+
+    lowest_location = 2**32
+    for seed in seeds:
+    # get mapping
+        soil = get_mapping(seed, seed_to_soil_map)
+        fertilizer = get_mapping(soil, soil_to_fertilizer_map)
+        water = get_mapping(fertilizer, fertilizer_to_water_map)
+        light = get_mapping(water, water_to_light_map)
+        temperature = get_mapping(light, light_to_temperature_map)
+        humidity = get_mapping(temperature, temperature_to_humidity_map)
+        location = get_mapping(humidity, humidity_to_location_map)
+        if location < lowest_location:
+            lowest_location = location
+
+    assert lowest_location == 12
+
 def get_mapping(source, map):
     for sts in map:
         destination_start = sts[0]
