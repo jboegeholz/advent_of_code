@@ -95,36 +95,29 @@ def test_seed_to_soil(seed, expected_soil):
 )
 def test_seed_to_soil(seed, expected_fertilizer):
     lines = data.split("\n\n")
-    # create map
-    # seed -> soil
+    # create maps
     seed_to_soil_map = create_map(lines, 1)
-    # soil to fertilizer
     soil_to_fertilizer_map = create_map(lines, 2)
 
     # get mapping seed -> soil
-    for sts in seed_to_soil_map:
-        destination_start = sts[0]
-        source_start = sts[1]
-        range = sts[2]
-        if source_start <= seed <= source_start + range:
-            offset = seed - sts[1]
-            soil = destination_start + offset
-            break
-        else:
-            soil = seed
-
-    for sts in soil_to_fertilizer_map:
-        destination_start = sts[0]
-        source_start = sts[1]
-        range = sts[2]
-        if source_start <= soil <= source_start + range:
-            offset = soil - sts[1]
-            fertilizer = destination_start + offset
-            break
-        else:
-            fertilizer = soil
+    soil = get_mapping(seed, seed_to_soil_map)
+    fertilizer = get_mapping(soil, soil_to_fertilizer_map)
 
     assert fertilizer == expected_fertilizer
+
+
+def get_mapping(source, map):
+    for sts in map:
+        destination_start = sts[0]
+        source_start = sts[1]
+        range = sts[2]
+        if source_start <= source <= source_start + range:
+            offset = source - sts[1]
+            dest = destination_start + offset
+            break
+        else:
+            dest = source
+    return dest
 
 
 def create_map(lines, index):
