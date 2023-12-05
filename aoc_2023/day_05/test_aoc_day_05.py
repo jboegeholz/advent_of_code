@@ -84,26 +84,40 @@ def test_seed_to_soil(seed, expected_soil):
 
 
 @pytest.mark.parametrize(
-    "seed, expected_fertilizer",
+    "seed, exp_soil, exp_fert, exp_wat, exp_light, exp_temp, exp_hum, exp_loc",
     [
-        (79, 81),
-        (14, 53),
-        (55, 57),
-        (13, 52),
+        (79, 81, 81, 81, 74, 78, 78, 82),
+        (14, 14, 53, 49, 42, 42, 43, 43),
+        (55, 57, 57, 53, 46, 82, 82, 86)
 
     ]
 )
-def test_seed_to_soil(seed, expected_fertilizer):
+def test_seed_to_location(seed, exp_soil, exp_fert, exp_wat, exp_light, exp_temp, exp_hum, exp_loc):
     lines = data.split("\n\n")
     # create maps
     seed_to_soil_map = create_map(lines, 1)
     soil_to_fertilizer_map = create_map(lines, 2)
+    fertilizer_to_water_map = create_map(lines, 3)
+    water_to_light_map = create_map(lines, 4)
+    light_to_temperature_map = create_map(lines, 5)
+    temperature_to_humidity_map = create_map(lines, 6)
+    humidity_to_location_map = create_map(lines, 7)
 
-    # get mapping seed -> soil
+    # get mapp9ing
     soil = get_mapping(seed, seed_to_soil_map)
     fertilizer = get_mapping(soil, soil_to_fertilizer_map)
-
-    assert fertilizer == expected_fertilizer
+    water = get_mapping(fertilizer, fertilizer_to_water_map)
+    light = get_mapping(water, water_to_light_map)
+    temperature = get_mapping(light, light_to_temperature_map)
+    humidity = get_mapping(temperature, temperature_to_humidity_map)
+    location = get_mapping(humidity, humidity_to_location_map)
+    assert soil == exp_soil
+    assert fertilizer == exp_fert
+    assert water == exp_wat
+    assert light == exp_light
+    assert temperature == exp_temp
+    assert humidity == exp_hum
+    assert location == exp_loc
 
 
 def get_mapping(source, map):
