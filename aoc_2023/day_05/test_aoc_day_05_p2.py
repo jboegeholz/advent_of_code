@@ -1,66 +1,84 @@
-data = """Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
-Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
-Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
-Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
+from test_aoc_day_05 import create_map, get_mapping
+data = """seeds: 79 14 55 13
+
+seed-to-soil map:
+50 98 2
+52 50 48
+
+soil-to-fertilizer map:
+0 15 37
+37 52 2
+39 0 15
+
+fertilizer-to-water map:
+49 53 8
+0 11 42
+42 0 7
+57 7 4
+
+water-to-light map:
+88 18 7
+18 25 70
+
+light-to-temperature map:
+45 77 23
+81 45 19
+68 64 13
+
+temperature-to-humidity map:
+0 69 1
+1 0 69
+
+humidity-to-location map:
+60 56 37
+56 93 4"""
+
+def test_get_seeds():
+    lines = data.split("\n\n")
+    seeds = lines[0].split(": ")[1].split(" ")
+    seeds = [int(s) for s in seeds]
+    new_seeds = []
+    for i, seed in enumerate(seeds[::2]):
+        seed_range = seeds[2*i+1]
+        for j in range(seed, seed + seed_range):
+            new_seeds.append(j)
+    assert new_seeds == []
 
 
-def test_get_total_points():
-    with open("aoc_data_04.txt", "r") as f:
-        data = f.read()
-    lines = data.split("\n")
-    cardsnwins = [
-        # card, no of cards, wins,
-        [0, 0, 0]]
-    for card_no, line in enumerate(lines):
-        wins = 0
-        numbers = line.split(": ")[1]
-        winning_numbers = numbers.split(" | ")[0].replace("  ", " ").split(" ")
-        your_numbers = numbers.split(" | ")[1].replace("  ", " ").split(" ")
-        for your_number in your_numbers:
-            if your_number in winning_numbers:
-                wins += 1
-        cardsnwins.append([card_no+1, 1, wins])
+def test_seed_to_location():
+    # with open("aoc_data_05.txt", "r") as f:
+    #     real_data = f.read()
+    real_data = data
+    # get seeds
+    lines = real_data.split("\n\n")
+    seeds = lines[0].split(": ")[1].split(" ")
+    seeds = [int(s) for s in seeds]
+    # create maps
+    seed_to_soil_map = create_map(lines, 1)
+    soil_to_fertilizer_map = create_map(lines, 2)
+    fertilizer_to_water_map = create_map(lines, 3)
+    water_to_light_map = create_map(lines, 4)
+    light_to_temperature_map = create_map(lines, 5)
+    temperature_to_humidity_map = create_map(lines, 6)
+    humidity_to_location_map = create_map(lines, 7)
 
-    # postprocessing
-    for j in range(0, len(cardsnwins)-2):
-        for i in range(2+j, cardsnwins[1+j][2]+2+j):
-            cardsnwins[i][1] += cardsnwins[1+j][1]
-    sum_of_cards = 0
-    for card in cardsnwins:
-        sum_of_cards += card[1]
-    assert sum_of_cards == 5095824
+    lowest_location = 2**32
+    new_seeds = []
+    for i, seed in enumerate(seeds[::2]):
+        seed_range = seeds[2 * i + 1]
+        for j in range(seed, seed + seed_range):
+            new_seeds.append(j)
 
+    for seed in new_seeds:
+    # get mapping
+        soil = get_mapping(seed, seed_to_soil_map)
+        fertilizer = get_mapping(soil, soil_to_fertilizer_map)
+        water = get_mapping(fertilizer, fertilizer_to_water_map)
+        light = get_mapping(water, water_to_light_map)
+        temperature = get_mapping(light, light_to_temperature_map)
+        humidity = get_mapping(temperature, temperature_to_humidity_map)
+        location = get_mapping(humidity, humidity_to_location_map)
+        if location < lowest_location:
+            lowest_location = location
 
-def test_wins():
-    cardsnwins = [
-        # card, no of cards, wins,
-        [0, 0, 0],
-        [1, 1, 4],
-        [2, 1, 2],
-        [3, 1, 2],
-        [4, 1, 1],
-        [5, 1, 0],
-        [6, 1, 0]
-    ]
-
-    for j in range(0, len(cardsnwins)-3):
-        for i in range(2+j, cardsnwins[1+j][2]+2+j):
-            cardsnwins[i][1] += cardsnwins[1+j][1]
-
-
-    assert cardsnwins == [
-        # card, no of cards, wins,
-        [0, 0, 0],
-        [1, 1, 4],
-        [2, 2, 2],
-        [3, 4, 2],
-        [4, 8, 1],
-        [5, 14, 0],
-        [6, 1, 0]
-    ]
-    sum_of_cards = 0
-    for card in cardsnwins:
-        sum_of_cards += card[1]
-    assert sum_of_cards == 30
+    assert lowest_location == 46
