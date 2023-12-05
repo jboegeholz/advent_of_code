@@ -42,13 +42,13 @@ def test_get_seeds():
         seed_range = seeds[2*i+1]
         for j in range(seed, seed + seed_range):
             new_seeds.append(j)
-    assert new_seeds == []
+    assert new_seeds == [79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
 
 
 def test_seed_to_location():
-    # with open("aoc_data_05.txt", "r") as f:
-    #     real_data = f.read()
-    real_data = data
+    with open("aoc_data_05.txt", "r") as f:
+        real_data = f.read()
+    #real_data = data
     # get seeds
     lines = real_data.split("\n\n")
     seeds = lines[0].split(": ")[1].split(" ")
