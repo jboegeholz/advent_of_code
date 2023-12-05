@@ -71,7 +71,8 @@ def test_seed_to_location():
         print(f"Goinf from {seed} to {seed + seed_range}")
         for j in range(seed, seed + seed_range):
             # get mapping
-            #print(f"current seed is {j}")
+            if j % 1000000 == 0:
+                print(f"current seed is {j}")
             soil = get_mapping(j, seed_to_soil_map)
             fertilizer = get_mapping(soil, soil_to_fertilizer_map)
             water = get_mapping(fertilizer, fertilizer_to_water_map)
@@ -84,6 +85,8 @@ def test_seed_to_location():
                 print(f"{lowest_location} is lowest location so far")
 
     assert lowest_location == 46
+
+
 
 if __name__ == '__main__':
     test_seed_to_location()
