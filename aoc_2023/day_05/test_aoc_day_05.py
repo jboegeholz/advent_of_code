@@ -41,17 +41,35 @@ def test_get_seeds():
 
 def test_get_destination_start_range():
     lines = data.split("\n\n")
-    destination_range_start = lines[1].split("\n")[1].split(" ")[0]
-    source_range_start = lines[1].split("\n")[1].split(" ")[1]
-    range_length = lines[1].split("\n")[1].split(" ")[2]
-    assert destination_range_start == "50"
-    assert source_range_start == "98"
-    assert range_length == "2"
+    seed_to_soil_entry = lines[1].split("\n")
+    seed_to_soil_data = seed_to_soil_entry[1:]
+    seed_to_soil_map = []
+    for line in seed_to_soil_data:
+        seed_to_soil_map.append([int(s) for s in line.split(" ")])
 
-def_test_seed_to_soil():
-    seed = 79
+    assert seed_to_soil_map == [[50, 98, 2], [52, 50, 48]]
 
-    assert soil == 81
+
+def test_seed_to_soil():
+    seed = 98
+    lines = data.split("\n\n")
+    seed_to_soil_entry = lines[1].split("\n")
+    seed_to_soil_data = seed_to_soil_entry[1:]
+    seed_to_soil_map = []
+    for line in seed_to_soil_data:
+        seed_to_soil_map.append([int(s) for s in line.split(" ")])
+
+    for sts in seed_to_soil_map:
+        destination_start = sts[0]
+        source_start = sts[1]
+        range = sts[2]
+        if source_start <= seed <= source_start + range:
+            offset = seed - sts[1]
+            soil = destination_start + offset
+            break
+        else:
+            soil = seed
+    assert soil == 50
 
 def test_get_total_points_from_real_data():
     with open("aoc_data_05.txt", "r") as f:
