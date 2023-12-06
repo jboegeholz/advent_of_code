@@ -6,9 +6,15 @@ Distance:  9  40  200"""
     "button_pressed_for, expected_distance_travelled",
     [
         (1, 6),
+        (2, 10),
+        (3, 12),
+        (4, 12),
+        (5, 10),
+        (6, 6),
+
 
     ]
 )
 def test_seed_to_soil(button_pressed_for, expected_distance_travelled):
-    distance_travelled= 7 - button_pressed_for
+    distance_travelled = (7 - button_pressed_for) * button_pressed_for
     assert distance_travelled == expected_distance_travelled
