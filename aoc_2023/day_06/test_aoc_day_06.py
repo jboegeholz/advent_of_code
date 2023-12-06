@@ -1,13 +1,15 @@
 import pytest
-data="""Time:      7  15   30
+test_data="""Time:      7  15   30
 Distance:  9  40  200"""
+real_data = """Time:        44     70     70     80
+Distance:   283   1134   1134   1491"""
 
 def test_get_races():
-    races = get_races()
+    races = get_races(test_data)
     assert races == [(7, 9), (15, 40), (30, 200)]
 
 
-def get_races():
+def get_races(data):
     time = data.split("\n")[0].split(":")[1].split(" ")
     time = list(filter(None, time))
     time = [int(s) for s in time]
@@ -53,8 +55,7 @@ def test_ways_to_win(race_time, current_record, ways_to_win):
             distances.append(distance_travelled)
     assert len(distances) == ways_to_win
 
-#Time:        44     70     70     80
-#Distance:   283   1134   1134   1491
+
 
 @pytest.mark.parametrize(
     "race_time, current_record, ways_to_win",
@@ -72,3 +73,18 @@ def test_ways_to_win_real_data(race_time, current_record, ways_to_win):
         if distance_travelled > current_record:
             distances.append(distance_travelled)
     assert len(distances) == ways_to_win
+
+def test_with_real_data():
+    prod_ways_to_win = 1
+
+    races = get_races(real_data)
+    for race in races:
+        distances = []
+        ways_to_win = 0
+        for i in range(race[0] + 1):
+            distance_travelled = (race[0]  - i) * i
+            if distance_travelled > race[1] :
+                distances.append(distance_travelled)
+        ways_to_win = len(distances)
+        prod_ways_to_win *= ways_to_win
+    assert prod_ways_to_win == 288
