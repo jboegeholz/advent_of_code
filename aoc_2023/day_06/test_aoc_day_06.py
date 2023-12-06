@@ -29,7 +29,7 @@ def test_seed_to_soil(button_pressed_for, expected_distance_travelled):
 
     ]
 )
-def test_seed_to_soil(race_time, current_record, ways_to_win):
+def test_ways_to_win(race_time, current_record, ways_to_win):
     distances = []
     for i in range(race_time+1):
         distance_travelled = (race_time - i) * i
