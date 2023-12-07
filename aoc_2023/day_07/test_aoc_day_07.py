@@ -31,7 +31,7 @@ def test_with_test_data():
 
     for line in lines:
         hand = [mapping[c] for c in line.split(" ")[0]]
-        hand.sort(reverse=True)
+        #hand.sort(reverse=True)
         bid = int(line.split(" ")[1])
         hands.append([hand, bid])
     # sort
@@ -53,6 +53,13 @@ def compare(a, b):
     #print("comparing ", a, " and ", b)
     hand_class_a = get_class(a[0])
     hand_class_b = get_class(b[0])
+    if hand_class_a == hand_class_b == 1:
+        if sum(a[0]) > sum(b[0]):
+            return 1
+        elif sum(a[0]) < sum(b[0]):
+            return -1
+        else:
+            return 0
     if hand_class_a > hand_class_b:
         return 1
     elif hand_class_a < hand_class_b:
@@ -66,10 +73,10 @@ def compare(a, b):
                 return -1
         else:
             print("shit identical hands")
-        return 0
+            return 0
 
 def get_class(hand):
-    # precondition: sorted descending
+    hand.sort(reverse=True)
     # five oak
     if hand[0] == hand[1] == hand[2] == hand[3] == hand[4]:
         hand_class = 7
@@ -119,7 +126,7 @@ def test_with_real_data():
 
     for line in lines:
         hand = [mapping[c] for c in line.split(" ")[0]]
-        hand.sort(reverse=True)
+        #hand.sort(reverse=True)
         bid = int(line.split(" ")[1])
         hands.append([hand, bid])
     # sort
