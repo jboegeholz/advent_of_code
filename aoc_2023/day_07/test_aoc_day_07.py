@@ -28,26 +28,26 @@ def test_convert_hand():
     "hand, exp_hand_class, exp_strength",
     [
         # five oak
-        ("AAAAA", 7, 0),
-        ("22222", 7, 0),
+        ("AAAAA", 7, 10000065),
+        ("22222", 7, 10000010),
         # four oak
-        ("AAAAQ", 6, 0),
-        ("2222A", 6, 0),
+        ("AAAAQ", 6, 1000064),
+        ("2222A", 6, 1000021),
         # full house
-        ("AAAQQ", 5, 0),
-        ("22233", 5, 0),
+        ("AAAQQ", 5, 100063),
+        ("22233", 5, 100012),
         # three oak
-        ("AAAQJ", 4, 0),
-        ("22234", 4, 0),
+        ("AAAQJ", 4, 10062),
+        ("22234", 4, 10013),
         # two pair
-        ("AAQQJ", 3, 0),
-        ("22334", 3, 0),
+        ("AAQQJ", 3, 1061),
+        ("22334", 3, 1014),
         # one pair
-        ("AAQJT", 2, 0),
-        ("22345", 2, 0),
+        ("AAQJT", 2, 159),
+        ("22345", 2, 116),
         # # high card
-        ("AJQT9", 1, 0),
-        ("65432", 1, 0),
+        ("AJQT9", 1, 65),
+        ("65432", 1, 30),
 
 
     ]
@@ -57,8 +57,16 @@ def test_get_class(hand, exp_hand_class, exp_strength):
     hand = [mapping[c] for c in hand]
     hand.sort(reverse=True)
     hand_class = get_class(hand, hand_class)
-
+    strength = get_absolute_strength(hand, hand_class, strength)
     assert hand_class == exp_hand_class
+    assert exp_strength == strength
+
+
+def get_absolute_strength(hand, hand_class, strength):
+    for i in hand:
+        strength += i
+    strength += 10 ** hand_class
+    return strength
 
 
 def get_class(hand, hand_class):
