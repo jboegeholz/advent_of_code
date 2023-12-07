@@ -2,11 +2,25 @@ from collections import OrderedDict
 from functools import cmp_to_key
 import pytest
 
-data = """32T3K 765
-T55J5 684
-KK677 28
-KTJJT 220
-QQQJA 483"""
+data = """2345A 1
+Q2KJJ 13
+Q2Q2Q 19
+T3T3J 17
+T3Q33 11
+2345J 3
+J345A 2
+32T3K 5
+T55J5 29
+KK677 7
+KTJJT 34
+QQQJA 31
+JJJJJ 37
+JAAAA 43
+AAAAJ 59
+AAAAA 61
+2AAAA 23
+2JJJJ 53
+JJJJ2 41"""
 
 mapping = {
     "2": 2,
@@ -31,24 +45,25 @@ def test_with_test_data():
 
     for line in lines:
         hand = [mapping[c] for c in line.split(" ")[0]]
-        #hand.sort(reverse=True)
         bid = int(line.split(" ")[1])
         hands.append([hand, bid])
     # sort
     hands.sort(key=cmp_to_key(compare))
-    assert hands == [
-        [[13, 10, 3, 3, 2], 765],
-        [[13, 11, 11, 10, 10], 220],
-        [[13, 13, 7, 7, 6], 28],
-        [[11, 10, 5, 5, 5], 684],
-        [[14, 12, 12, 12, 11], 483]
-    ]
+    # assert hands == [
+    #     [[13, 10, 3, 3, 2], 765],
+    #     [[13, 11, 11, 10, 10], 220],
+    #     [[13, 13, 7, 7, 6], 28],
+    #     [[11, 10, 5, 5, 5], 684],
+    #     [[14, 12, 12, 12, 11], 483]
+    # ]
+    #assert hands == []
     total_winnings = 0
     for rank, hand in enumerate(hands):
         bid = hand[1]
         total_winnings += bid * (rank+1)
 
-    assert total_winnings == 6440
+    assert total_winnings == 6592
+
 def compare(a, b):
     #print("comparing ", a, " and ", b)
     hand_class_a = get_class(a[0])
@@ -71,12 +86,14 @@ def compare(a, b):
                 return 1
             elif a[0][i] < b[0][i]:
                 return -1
+            else:
+                continue
         else:
             print("shit identical hands")
             return 0
 
 def get_class(hand):
-    hand.sort(reverse=True)
+    hand = sorted(hand,reverse=True)
     # five oak
     if hand[0] == hand[1] == hand[2] == hand[3] == hand[4]:
         hand_class = 7
