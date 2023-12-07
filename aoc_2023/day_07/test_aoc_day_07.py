@@ -30,27 +30,31 @@ def test_convert_hand():
 @pytest.mark.parametrize(
     "hand, exp_hand_class, exp_strength",
     [
-        # five oak
-        ("AAAAA", 7, 10000070),
-        ("22222", 7, 10000010),
-        # four oak
-        ("AAAAQ", 6, 1000068),
-        ("2222A", 6, 1000022),
-        # full house
-        ("AAAQQ", 5, 100066),
-        ("22233", 5, 100012),
-        # three oak
-        ("AAAQJ", 4, 10065),
-        ("22234", 4, 10013),
+        # # five oak
+        ("AAAAA", 7, 100000449),
+        ("22222", 7, 100000077),
+        # # four oak
+        ("AAAAQ", 6, 10000417),
+        ("2222A", 6, 10000089),
+        # # full house
+        ("AAAQQ", 5, 1000401),
+        ("22233", 5, 1000080),
+        # # three oak
+        ("AAAQJ", 4, 100385),
+        ("22234", 4, 100081),
         # two pair
-        ("AAQQJ", 3, 1063),
-        ("22334", 3, 1014),
-        # one pair
-        ("AAQJT", 2, 161),
-        ("22345", 2, 116),
-        # # high card
-        ("AJQT9", 1, 66),
-        ("65432", 1, 30),
+        ("AAQQJ", 3, 10377),
+        ("KTJJT", 3, 10334),
+        ("KTTJJ", 3, 10334),
+        ("KK677", 3, 10234),
+
+        ("22334", 3, 10085),
+        # # one pair
+        ("AAKQJ", 2, 1381),
+        ("22345", 2, 1088),
+        # # # high card
+        ("AKQJT", 1, 451),
+        ("65432", 1, 203),
 
 
     ]
@@ -58,16 +62,16 @@ def test_convert_hand():
 def test_get_class(hand, exp_hand_class, exp_strength):
     hand = [mapping[c] for c in hand]
     hand_class = get_class(sorted(hand, reverse=True))
-    strength = get_absolute_strength(hand, hand_class)
+    strength = get_absolute_strength(sorted(hand, reverse=True), hand_class)
     assert hand_class == exp_hand_class
     assert strength == exp_strength
 
 
 def get_absolute_strength(hand, hand_class):
     strength = 0
-    for i in hand:
-        strength += i
-    strength += 10 ** hand_class
+    for i, c in enumerate(hand):
+        strength += c * 2**i+(5-i)
+    strength += 10 ** (hand_class + 1)
     return strength
 
 
@@ -130,7 +134,7 @@ def test_corner_cases():
 
     strength_1 = get_strength(orig_hand_1)
     strength_2 = get_strength(orig_hand_2)
-    assert strength_1 > strength_2
+    assert strength_2 > strength_1
 
 
 def get_strength(orig_hand):
