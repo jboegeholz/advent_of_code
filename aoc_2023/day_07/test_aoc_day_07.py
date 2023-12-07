@@ -25,9 +25,10 @@ mapping = {
 }
 
 
-def test_shit():
-    hands = []
+def test_with_test_data():
     lines = data.split("\n")
+    hands = []
+
     for line in lines:
         hand = [mapping[c] for c in line.split(" ")[0]]
         hand.sort(reverse=True)
@@ -49,7 +50,7 @@ def test_shit():
 
     assert total_winnings == 6440
 def compare(a, b):
-    print("comparing ", a, " and ", b)
+    #print("comparing ", a, " and ", b)
     hand_class_a = get_class(a[0])
     hand_class_b = get_class(b[0])
     if hand_class_a > hand_class_b:
@@ -57,36 +58,46 @@ def compare(a, b):
     elif hand_class_a < hand_class_b:
         return -1
     else:
+        #print("same class: compare single cards")
         for i in range(5):
             if a[0][i] > b[0][i]:
                 return 1
             elif a[0][i] < b[0][i]:
                 return -1
+        else:
+            print("shit identical hands")
         return 0
 
 def get_class(hand):
+    # precondition: sorted descending
+    # five oak
     if hand[0] == hand[1] == hand[2] == hand[3] == hand[4]:
         hand_class = 7
+    # four oak
     elif hand[0] == hand[1] == hand[2] == hand[3]:
         hand_class = 6
     elif hand[1] == hand[2] == hand[3] == hand[4]:
         hand_class = 6
+    # full house
     elif (hand[0] == hand[1]) and (hand[2] == hand[3] == hand[4]):
         hand_class = 5
     elif (hand[0] == hand[1] == hand[2]) and (hand[3] == hand[4]):
         hand_class = 5
+    # three oak
     elif hand[0] == hand[1] == hand[2]:
         hand_class = 4
     elif hand[1] == hand[2] == hand[3]:
         hand_class = 4
     elif hand[2] == hand[3] == hand[4]:
         hand_class = 4
+    # two pairs
     elif hand[0] == hand[1] and hand[2] == hand[3]:
         hand_class = 3
     elif hand[0] == hand[1] and hand[3] == hand[4]:
         hand_class = 3
     elif hand[1] == hand[2] and hand[3] == hand[4]:
         hand_class = 3
+    # one pair
     elif hand[0] == hand[1]:
         hand_class = 2
     elif hand[1] == hand[2]:
@@ -97,4 +108,26 @@ def get_class(hand):
         hand_class = 2
     else:
         hand_class = 1
+    assert hand_class != 0
     return hand_class
+
+def test_with_real_data():
+    with open("aoc_data_07.txt", "r") as f:
+        real_data = f.read()
+    lines = real_data.split("\n")
+    hands = []
+
+    for line in lines:
+        hand = [mapping[c] for c in line.split(" ")[0]]
+        hand.sort(reverse=True)
+        bid = int(line.split(" ")[1])
+        hands.append([hand, bid])
+    # sort
+    hands.sort(key=cmp_to_key(compare))
+
+    total_winnings = 0
+    for rank, hand in enumerate(hands):
+        bid = hand[1]
+        total_winnings += bid * (rank+1)
+
+    assert total_winnings == 6440
