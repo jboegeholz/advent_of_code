@@ -1,7 +1,8 @@
 from collections import OrderedDict
-
+from functools import cmp_to_key
 import pytest
-data="""32T3K 765
+
+data = """32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
@@ -21,59 +22,47 @@ mapping = {
     "Q": 12,
     "K": 13,
     "A": 14,
-           }
-def test_convert_hand():
-    hand = "AAAAA"
-    hand = [mapping[c] for c in hand]
-    assert hand == [14, 14, 14, 14, 14]
-
-@pytest.mark.parametrize(
-    "hand, exp_hand_class, exp_strength",
-    [
-        # # five oak
-        ("AAAAA", 7, 100000449),
-        ("22222", 7, 100000077),
-        # # four oak
-        ("AAAAQ", 6, 10000417),
-        ("2222A", 6, 10000089),
-        # # full house
-        ("AAAQQ", 5, 1000401),
-        ("22233", 5, 1000080),
-        # # three oak
-        ("AAAQJ", 4, 100385),
-        ("22234", 4, 100081),
-        # two pair
-        ("AAQQJ", 3, 10377),
-        ("KTJJT", 3, 10334),
-        ("KTTJJ", 3, 10334),
-        ("KK677", 3, 10234),
-
-        ("22334", 3, 10085),
-        # # one pair
-        ("AAKQJ", 2, 1381),
-        ("22345", 2, 1088),
-        # # # high card
-        ("AKQJT", 1, 451),
-        ("65432", 1, 203),
+}
 
 
+def test_shit():
+    hands = []
+    lines = data.split("\n")
+    for line in lines:
+        hand = [mapping[c] for c in line.split(" ")[0]]
+        hand.sort(reverse=True)
+        bid = int(line.split(" ")[1])
+        hands.append([hand, bid])
+    # sort
+    hands.sort(key=cmp_to_key(compare))
+    assert hands == [
+        [[13, 10, 3, 3, 2], 765],
+        [[13, 11, 11, 10, 10], 220],
+        [[13, 13, 7, 7, 6], 28],
+        [[11, 10, 5, 5, 5], 684],
+        [[14, 12, 12, 12, 11], 483]
     ]
-)
-def test_get_class(hand, exp_hand_class, exp_strength):
-    hand = [mapping[c] for c in hand]
-    hand_class = get_class(sorted(hand, reverse=True))
-    strength = get_absolute_strength(sorted(hand, reverse=True), hand_class)
-    assert hand_class == exp_hand_class
-    assert strength == exp_strength
+    total_winnings = 0
+    for rank, hand in enumerate(hands):
+        bid = hand[1]
+        total_winnings += bid * (rank+1)
 
-
-def get_absolute_strength(hand, hand_class):
-    strength = 0
-    for i, c in enumerate(hand):
-        strength += c * 2**i+(5-i)
-    strength += 10 ** (hand_class + 1)
-    return strength
-
+    assert total_winnings == 6440
+def compare(a, b):
+    print("comparing ", a, " and ", b)
+    hand_class_a = get_class(a[0])
+    hand_class_b = get_class(b[0])
+    if hand_class_a > hand_class_b:
+        return 1
+    elif hand_class_a < hand_class_b:
+        return -1
+    else:
+        for i in range(5):
+            if a[0][i] > b[0][i]:
+                return 1
+            elif a[0][i] < b[0][i]:
+                return -1
+        return 0
 
 def get_class(hand):
     if hand[0] == hand[1] == hand[2] == hand[3] == hand[4]:
@@ -109,37 +98,3 @@ def get_class(hand):
     else:
         hand_class = 1
     return hand_class
-
-
-def test_get_total_winnings():
-    total_winnings = 0
-    winnings = []
-    for line in data.split("\n"):
-        orig_hand = line.split(" ")[0]
-        bid = line.split(" ")[1]
-        hand = [mapping[c] for c in orig_hand]
-        hand.sort(reverse=True)
-        hand_class = get_class(hand)
-        strength = get_absolute_strength(hand, hand_class)
-        winnings.append((strength, int(bid), orig_hand))
-    winnings.sort(key = lambda x: x[0])
-    for rank, w in enumerate(winnings):
-        total_winnings += (rank+1) * w[1]
-
-    assert total_winnings == 6440
-
-def test_corner_cases():
-    orig_hand_1 = "KTJJT" # KJJTT
-    orig_hand_2 = "KK677" # KK776
-
-    strength_1 = get_strength(orig_hand_1)
-    strength_2 = get_strength(orig_hand_2)
-    assert strength_2 > strength_1
-
-
-def get_strength(orig_hand):
-    hand = [mapping[c] for c in orig_hand]
-    hand.sort(reverse=True)
-    hand_class = get_class(hand)
-    strength = get_absolute_strength(hand, hand_class)
-    return strength
