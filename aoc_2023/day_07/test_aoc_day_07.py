@@ -1,3 +1,4 @@
+import pytest
 data="""32T3K 765
 T55J5 684
 KK677 28
@@ -23,13 +24,39 @@ def test_convert_hand():
     hand = [mapping[c] for c in hand]
     assert hand == [13, 13, 13, 13, 13]
 
-def test_strength():
-    hand = "AAAAA"
+@pytest.mark.parametrize(
+    "hand, hand_class",
+    [
+        # five oak
+        ("AAAAA", 7),
+        ("22222", 7),
+        # four oak
+        ("AAAAQ", 6),
+        ("2222A", 6),
+        # full house
+        ("AAAQQ", 5),
+        ("22233", 5),
+        # three oak
+        ("AAAQJ", 4),
+        ("22234", 4),
+        # two pair
+        ("AAQQJ", 3),
+        ("22334", 3),
+        # one pair
+        ("AAQJT", 2),
+        ("22345", 2),
+        # high card
+        ("AJQT9", 1),
+        ("65432", 1),
+
+
+    ]
+)
+def test_get_class(hand, hand_class):
     hand = [mapping[c] for c in hand]
-    hand = set(hand)
+
     rel_strength = 0
-    for i in hand:
-        rel_strength += i*i
+
     assert rel_strength == 169
 
 
