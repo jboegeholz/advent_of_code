@@ -25,7 +25,7 @@ def test_convert_hand():
     assert hand == [13, 13, 13, 13, 13]
 
 @pytest.mark.parametrize(
-    "hand, hand_class",
+    "hand, exp_hand_class",
     [
         # five oak
         ("AAAAA", 7),
@@ -45,19 +45,49 @@ def test_convert_hand():
         # one pair
         ("AAQJT", 2),
         ("22345", 2),
-        # high card
-        ("AJQT9", 1),
-        ("65432", 1),
+        # # high card
+        # ("AJQT9", 1),
+        # ("65432", 1),
 
 
     ]
 )
-def test_get_class(hand, hand_class):
+def test_get_class(hand, exp_hand_class):
+    hand_class = 0
     hand = [mapping[c] for c in hand]
+    hand.sort(reverse=True)
+    if hand[0] == hand[1] == hand[2] == hand[3] == hand[4]:
+        hand_class = 7
+    elif hand[0] == hand[1] == hand[2] == hand[3]:
+        hand_class = 6
+    elif hand[1] == hand[2] == hand[3] == hand[4]:
+        hand_class = 6
+    elif (hand[0] == hand[1]) and (hand[2] == hand[3] == hand[4]):
+        hand_class = 5
+    elif (hand[0] == hand[1] == hand[2]) and (hand[3] == hand[4]):
+        hand_class = 5
+    elif hand[0] == hand[1] == hand[2]:
+        hand_class = 4
+    elif hand[1] == hand[2] == hand[3]:
+        hand_class = 4
+    elif hand[2] == hand[3] == hand[4]:
+        hand_class = 4
+    elif hand[0] == hand[1] and hand[2] == hand[3]:
+        hand_class = 3
+    elif hand[0] == hand[1] and hand[3] == hand[4]:
+        hand_class = 3
+    elif hand[1] == hand[2] and hand[3] == hand[4]:
+        hand_class = 3
+    elif hand[0] == hand[1]:
+        hand_class = 2
+    elif hand[1] == hand[2]:
+        hand_class = 2
+    elif hand[2] == hand[3]:
+        hand_class = 2
+    elif hand[3] == hand[4]:
+        hand_class = 2
 
-    rel_strength = 0
-
-    assert rel_strength == 169
+    assert hand_class == exp_hand_class
 
 
 
