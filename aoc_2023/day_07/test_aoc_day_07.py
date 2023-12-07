@@ -143,7 +143,6 @@ def test_with_real_data():
 
     for line in lines:
         hand = [mapping[c] for c in line.split(" ")[0]]
-        #hand.sort(reverse=True)
         bid = int(line.split(" ")[1])
         hands.append([hand, bid])
     # sort
