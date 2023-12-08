@@ -1,6 +1,6 @@
 import pytest
 
-data = """LLR
+data_1 = """LLR
 
 AAA = (BBB, BBB)
 BBB = (AAA, ZZZ)
@@ -17,13 +17,13 @@ GGG = (GGG, GGG)
 ZZZ = (ZZZ, ZZZ)"""
 
 def test_get_steps():
-    steps = list(data.split("\n\n")[0])
+    steps = list(data_1.split("\n\n")[0])
 
     assert steps == ['L', 'L', 'R']
 
 
 def test_get_map():
-    map = create_map(data)
+    map = create_map(data_1)
     assert map == {
         'AAA': ['BBB', 'BBB'],
         'BBB': ['AAA', 'ZZZ'],
@@ -47,8 +47,9 @@ def test_walk():
     steps = list(data_2.split("\n\n")[0])
     map = create_map(data)
     start = "AAA"
-
+    number_of_steps = 0
     for i, step in enumerate(steps):
+        number_of_steps += 1
         if i == 0:
             new_direction = "AAA"
         if step == "L":
@@ -58,4 +59,31 @@ def test_walk():
         if i == len(steps)-1 and new_direction == "ZZZ":
             found = True
     assert found == True
+    assert number_of_steps == 2
+    assert new_direction == "ZZZ"
+
+
+def test_walk_data_1():
+    steps = list(data_1.split("\n\n")[0])
+    map = create_map(data_1)
+    start = "AAA"
+    number_of_steps = 0
+    loop_repeats = 0
+    found = False
+    while not found:
+        new_direction = ""
+        loop_repeats += 1
+        for i, step in enumerate(steps):
+            number_of_steps += 1
+            if i == 0:
+                new_direction = "AAA"
+            if step == "L":
+                new_direction = map[new_direction][0]
+            else:
+                new_direction = map[new_direction][1]
+            if i == len(steps)-1 and new_direction == "ZZZ":
+                found = True
+    assert found == True
+    assert number_of_steps == 6
+    assert loop_repeats == 2
     assert new_direction == "ZZZ"
