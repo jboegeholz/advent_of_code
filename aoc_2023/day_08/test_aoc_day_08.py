@@ -70,12 +70,12 @@ def test_walk_data_1():
     number_of_steps = 0
     loop_repeats = 0
     found = False
+    new_direction = ""
     while not found:
-        new_direction = ""
         loop_repeats += 1
         for i, step in enumerate(steps):
             number_of_steps += 1
-            if i == 0:
+            if i == 0 and loop_repeats == 1:
                 new_direction = "AAA"
             if step == "L":
                 new_direction = map[new_direction][0]
@@ -83,7 +83,35 @@ def test_walk_data_1():
                 new_direction = map[new_direction][1]
             if i == len(steps)-1 and new_direction == "ZZZ":
                 found = True
-    assert found == True
+    assert found
+    assert number_of_steps == 6
+    assert loop_repeats == 2
+    assert new_direction == "ZZZ"
+
+
+def test_walk_real_data():
+    with open("aoc_data_08.txt", "r") as f:
+        real_data = f.read()
+    steps = list(real_data.split("\n\n")[0])
+    map = create_map(real_data)
+    start = "AAA"
+    number_of_steps = 0
+    loop_repeats = 0
+    found = False
+    new_direction = ""
+    while not found:
+        loop_repeats += 1
+        for i, step in enumerate(steps):
+            number_of_steps += 1
+            if i == 0 and loop_repeats == 1:
+                new_direction = "AAA"
+            if step == "L":
+                new_direction = map[new_direction][0]
+            else:
+                new_direction = map[new_direction][1]
+            if i == len(steps)-1 and new_direction == "ZZZ":
+                found = True
+    assert found
     assert number_of_steps == 6
     assert loop_repeats == 2
     assert new_direction == "ZZZ"
