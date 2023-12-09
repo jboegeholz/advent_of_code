@@ -83,5 +83,5 @@ def test_next_value_3():
 
     assert all_differences == [[10, 13, 16, 21, 30, 45, 68], [3, 3, 5, 9, 15, 23], [0, 2, 4, 6, 8], [2, 2, 2, 2], [0, 0, 0]]
 
-    #next_value = 0
-    #assert next_value == 68
+    next_value = all_differences[0][-1]
+    assert next_value == 68
