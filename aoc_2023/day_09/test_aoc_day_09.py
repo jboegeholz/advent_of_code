@@ -20,6 +20,14 @@ def test_next_value():
     assert next_value == 18
 
 
+def all_zero(differences):
+    is_zero = True
+    for d in differences:
+        if d != 0:
+            is_zero = False
+    return is_zero
+
+
 def test_next_value_2():
     line = [int(c) for c in "1 3 6 10 15 21".split(" ")]
     differences = []
@@ -38,6 +46,7 @@ def test_next_value_2():
     assert differences_3 == [0, 0, 0]
 
     differences_3.append(0)
+    assert all_zero(differences_3)
     assert differences_3 == [0, 0, 0, 0]
 
     differences_2.append(differences_3[-1] + differences_2[-1])
