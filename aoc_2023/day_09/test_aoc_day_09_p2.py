@@ -114,4 +114,4 @@ def test_next_value_with_data():
 
         next_value = all_differences[0][0]
         sum_of_extrapolated_values += next_value
-    assert sum_of_extrapolated_values == 1743490457
+    assert sum_of_extrapolated_values == 1053
