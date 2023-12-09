@@ -76,18 +76,18 @@ def test_next_value_3():
 
     assert all_differences == [[10, 13, 16, 21, 30, 45], [3, 3, 5, 9, 15], [0, 2, 4, 6], [2, 2, 2], [0, 0]]
 
-    all_differences[-1].append(0)
+    all_differences[-1].insert(0, 0)
 
     assert all_differences == [[10, 13, 16, 21, 30, 45], [3, 3, 5, 9, 15], [0, 2, 4, 6], [2, 2, 2], [0, 0, 0]]
 
     for i in range(len(all_differences)-1, 0, -1):
         current_diff = all_differences[i]
-        all_differences[i-1].append(current_diff[-1] + all_differences[i-1][-1])
+        all_differences[i-1].insert(0, (all_differences[i-1][0] - current_diff[0] ))
 
-    assert all_differences == [[10, 13, 16, 21, 30, 45, 68], [3, 3, 5, 9, 15, 23], [0, 2, 4, 6, 8], [2, 2, 2, 2], [0, 0, 0]]
+    assert all_differences == [[5, 10, 13, 16, 21, 30, 45], [5, 3, 3, 5, 9, 15], [-2, 0, 2, 4, 6], [2, 2, 2, 2], [0, 0, 0]]
 
-    next_value = all_differences[0][-1]
-    assert next_value == 68
+    next_value = all_differences[0][0]
+    assert next_value == 5
 
 def test_next_value_with_data():
     with open("aoc_data_09.txt", "r") as f:
@@ -106,12 +106,12 @@ def test_next_value_with_data():
                 differences.append(current_diff[i + 1] - current_diff[i])
             all_differences.append(differences)
 
-        all_differences[-1].append(0)
+        all_differences[-1].insert(0, 0)
 
         for i in range(len(all_differences)-1, 0, -1):
             current_diff = all_differences[i]
-            all_differences[i-1].append(current_diff[-1] + all_differences[i-1][-1])
+            all_differences[i - 1].insert(0, (all_differences[i - 1][0] - current_diff[0]))
 
-        next_value = all_differences[0][-1]
+        next_value = all_differences[0][0]
         sum_of_extrapolated_values += next_value
     assert sum_of_extrapolated_values == 1743490457
