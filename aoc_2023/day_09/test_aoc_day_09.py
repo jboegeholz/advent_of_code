@@ -57,3 +57,25 @@ def test_next_value_2():
     assert differences == [2,   3,   4,   5,   6,   7]
     next_value = differences[-1] + line[-1]
     assert next_value == 28
+
+def test_next_value_3():
+    line = [int(c) for c in "10 13 16 21 30 45".split(" ")]
+    all_differences = []
+    all_differences.append(line)
+    differences = []
+    for i in range(len(line)-1):
+        differences.append(line[i+1] - line[i])
+    all_differences.append(differences)
+    assert all_differences == [[10, 13, 16, 21, 30, 45], [3, 3, 5, 9, 15]]
+
+    while not all_zero(all_differences[-1]):
+        current_diff = all_differences[-1]
+        differences = []
+        for i in range(len(current_diff) - 1):
+            differences.append(current_diff[i + 1] - current_diff[i])
+        all_differences.append(differences)
+
+    assert all_differences == [[10, 13, 16, 21, 30, 45], [3, 3, 5, 9, 15], [0, 2, 4, 6], [2, 2, 2], [0, 0]]
+
+    #next_value = 0
+    #assert next_value == 68
