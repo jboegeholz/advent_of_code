@@ -90,8 +90,10 @@ def test_next_value_3():
     next_value = all_differences[0][-1]
     assert next_value == 68
 
-def test_next_value_test_data():
-    lines = data.split("\n")
+def test_next_value_with_data():
+    with open("aoc_data_09.txt", "r") as f:
+        real_data = f.read()
+    lines = real_data.split("\n")
     sum_of_extrapolated_values = 0
     for line in lines:
         line = [int(c) for c in line.split(" ")]
