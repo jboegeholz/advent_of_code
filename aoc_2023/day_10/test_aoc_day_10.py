@@ -60,7 +60,9 @@ def test_transform_maze():
         current_pos[0] += 1
     assert current_pos == [3, 3]
 
-    maze[current_pos[0]][current_pos[1]] = '4'
+    if maze[current_pos[0]][current_pos[1]] == 'J':
+        stop = True
+        maze[current_pos[0]][current_pos[1]] = '4'
 
     output = [['.', '.', '.', '.', '.'],
     ['.', '0', '1', '2', '.'],
