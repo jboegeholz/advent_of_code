@@ -1,3 +1,5 @@
+import numpy as np
+
 orig_galaxy = """...#......
 .......#..
 #.........
@@ -26,11 +28,19 @@ expanded_galaxy = """....#........
 def convert_mul_line_to_2D(data):
     maze = []
     for line in data.split("\n"):
-        maze.append(list(line))
+        maze.append([0 if c == '.' else 1 for c in line ])
     return maze
 
 def test_expand_galaxy():
-    new_galaxy
+    galaxy = np.array(convert_mul_line_to_2D(orig_galaxy))
+    output_array = np.array(False)
+    assert np.any(galaxy, out=output_array)
+
+def test_np_axis():
+    input_array = np.array([[False, False], [True, False]])
+    # Erstellen eines Ausgabearrays, in das das Ergebnis geschrieben werden soll
+    output_array = np.array(False)
+    assert np.any(input_array, out=output_array)
 
 def test_get_sum_of_shortest_paths():
     sum_of_lngths = 0
