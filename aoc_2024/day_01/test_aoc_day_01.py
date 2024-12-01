@@ -31,4 +31,18 @@ def test_count_distance():
 
 def test_solve_puzzele():
     total_distance = 0
+    list_1 = []
+    list_2 = []
+    with open("./aoc_data_01.txt", "r") as f:
+        for line in f.readlines():
+            line = line.rstrip('\r*\n')
+            list_1.append(int(line.split("   ")[0]))
+            list_2.append(int(line.split("   ")[1]))
+
+
+    list_1.sort()
+    list_2.sort()
+    for i, item in enumerate(list_1):
+        distance = abs(list_1[i] - list_2[i])
+        total_distance += distance
     assert 11 == total_distance
