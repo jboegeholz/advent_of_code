@@ -42,41 +42,32 @@ def test_delta_between_one_and_three():
 def test_number_of_safe_reports():
     number_of_safe_reports = 0
     for line in data.split("\n"):
-        ascending = True
-        descending = True
-        delta_ok = True
-        values = [int(x) for x in line.split(" ")]
-        for i in range(len(values) - 1):
-            if values[i + 1] < values[i]:
-                ascending = False
-            if values[i + 1] > values[i]:
-                descending = False
-            if not 1 <= abs(values[i + 1] - values[i]) <= 3:
-                delta_ok = False
-
-        if delta_ok and (ascending != descending):
+        values = [int(x) for x in line.rstrip().split(" ")]
+        if is_safe_report(values):
             number_of_safe_reports += 1
 
     assert number_of_safe_reports == 2
 
 def test_number_of_safe_reports_full():
     number_of_safe_reports = 0
-
     with open("./aoc_data_01.txt", "r") as f:
         for line in f.readlines():
-            ascending = True
-            descending = True
-            delta_ok = True
             values = [int(x) for x in line.rstrip().split(" ")]
-            for i in range(len(values) - 1):
-                if values[i + 1] < values[i]:
-                    ascending = False
-                if values[i + 1] > values[i]:
-                    descending = False
-                if not 1 <= abs(values[i + 1] - values[i]) <= 3:
-                    delta_ok = False
-
-            if delta_ok and (ascending != descending):
+            if is_safe_report(values):
                 number_of_safe_reports += 1
 
-    assert number_of_safe_reports == 2
+    assert number_of_safe_reports == 486
+
+
+def is_safe_report(values):
+    ascending = True
+    descending = True
+    delta_ok = True
+    for i in range(len(values) - 1):
+        if values[i + 1] < values[i]:
+            ascending = False
+        if values[i + 1] > values[i]:
+            descending = False
+        if not 1 <= abs(values[i + 1] - values[i]) <= 3:
+            delta_ok = False
+    return delta_ok and (ascending != descending)
