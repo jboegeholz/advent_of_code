@@ -74,4 +74,4 @@ def test_number_of_safe_reports_full():
                         number_of_safe_reports += 1
                         break
 
-    assert number_of_safe_reports == 2
+    assert number_of_safe_reports == 540
