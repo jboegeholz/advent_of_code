@@ -50,7 +50,7 @@ def test_number_of_safe_reports():
 
 def test_number_of_safe_reports_full():
     number_of_safe_reports = 0
-    with open("./aoc_data_01.txt", "r") as f:
+    with open("aoc_data_02.txt", "r") as f:
         for line in f.readlines():
             values = [int(x) for x in line.rstrip().split(" ")]
             if is_safe_report(values):
