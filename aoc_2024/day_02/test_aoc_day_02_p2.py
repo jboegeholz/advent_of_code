@@ -1,4 +1,4 @@
-from aoc_2024.day_02.test_aoc_day_01 import is_safe_report
+from aoc_2024.day_02.test_aoc_day_02 import is_safe_report
 
 data = """7 6 4 2 1
 1 2 7 8 9
