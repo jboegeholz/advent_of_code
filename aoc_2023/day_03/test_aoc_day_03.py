@@ -104,7 +104,7 @@ test_data_4 = """.....
 def test_is_part_number():
     with open("aoc_data_03.txt", "r") as f:
         real_data = f.read()
-    real_data = test_data_4
+    #real_data = test_data_4
     part_numbers = []
     data_array = []
     for line in real_data.splitlines():
