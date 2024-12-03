@@ -1,22 +1,23 @@
 import re
-def test_regex():
-    text = "Dies ist ein start Text mit Inhalten end, die entfernt werden sollen."
-    result = re.sub(r'(?<=start).*?(?=end)', '', text)
-    assert result == "Dies ist ein startend, die entfernt werden sollen."
+import pytest
 
-def test_remove_sections():
-    # The do() instruction enables future mul instructions.
-    # The don't() instruction disables future mul instructions.
-    data = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
-    data = re.sub(r"don't\(\).+do\(\)", '', data)
+@pytest.mark.parametrize(
+    "data, expected",
+    [
+        ("don't()xyzdon't()xyzdo()abc", "do()abc"),
+    ]
+)
+def test_fully_split(data, expected):
+    data = re.sub(r"don't\(\).+(?=do\(\))", '', data)
 
-    assert data == "xmul(2,4)&mul[3,7]!^?mul(8,5))"
+    assert data == expected
+
 
 def test_regex_full_data_multiply():
-    with open("aoc_data_03.txt", "r") as f:
+    with (open("aoc_data_03.txt", "r") as f):
         data = f.read()
-        p = re.compile(r"mul\(\d+,\d+\)")
-        result = p.findall(data)
+        data = re.sub(r"don't\(\).+(?=do\(\))", '', data)
+        data = re.sub(r"don't\(\).+(?=don't\(\))", '', data)
         sum_of_products = 0
         p = re.compile(r"mul\(\d+,\d+\)")
         result = p.findall(data)
@@ -26,4 +27,7 @@ def test_regex_full_data_multiply():
             product = int(numbers[0]) * int(numbers[1])
             sum_of_products += product
 
-        assert sum_of_products == 0
+        assert sum_of_products == 36130721
+        # too low   32753109
+        # not right 36130721
+        # too high  69631176
