@@ -1,6 +1,4 @@
 import re
-from itertools import product
-
 
 def test_mul_simple():
     data = "mul(44,46)"
@@ -45,4 +43,4 @@ def test_regex_full_data_multiply():
             product = int(numbers[0]) * int(numbers[1])
             sum_of_products += product
 
-        assert sum_of_products == 161
+        assert sum_of_products == 162813399
