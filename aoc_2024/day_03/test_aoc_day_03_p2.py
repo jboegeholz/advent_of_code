@@ -1,14 +1,29 @@
-from aoc_2024.day_02.test_aoc_day_02 import is_safe_report
+import re
+def test_regex():
+    text = "Dies ist ein start Text mit Inhalten end, die entfernt werden sollen."
+    result = re.sub(r'(?<=start).*?(?=end)', '', text)
+    assert result == "Dies ist ein startend, die entfernt werden sollen."
 
-data = """7 6 4 2 1
-1 2 7 8 9
-9 7 6 2 1
-1 3 2 4 5
-8 6 4 4 1
-1 3 6 7 9"""
-def test_convert_to_lists():
+def test_remove_sections():
+    # The do() instruction enables future mul instructions.
+    # The don't() instruction disables future mul instructions.
+    data = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
+    data = re.sub(r"don't\(\).+do\(\)", '', data)
 
-    for line in data.split("\n"):
-        print(line)
+    assert data == "xmul(2,4)&mul[3,7]!^?mul(8,5))"
 
-    assert line == '1 3 6 7 9'
+def test_regex_full_data_multiply():
+    with open("aoc_data_03.txt", "r") as f:
+        data = f.read()
+        p = re.compile(r"mul\(\d+,\d+\)")
+        result = p.findall(data)
+        sum_of_products = 0
+        p = re.compile(r"mul\(\d+,\d+\)")
+        result = p.findall(data)
+        for instruction in result:
+            splitted = instruction.split("mul(")
+            numbers = splitted[1].rstrip(")").split(",")
+            product = int(numbers[0]) * int(numbers[1])
+            sum_of_products += product
+
+        assert sum_of_products == 0
