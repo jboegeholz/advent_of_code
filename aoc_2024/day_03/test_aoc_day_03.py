@@ -1,12 +1,34 @@
-data = """7 6 4 2 1
-1 2 7 8 9
-9 7 6 2 1
-1 3 2 4 5
-8 6 4 4 1
-1 3 6 7 9"""
-def test_convert_to_lists():
+import re
+from itertools import product
 
-    for line in data.split("\n"):
-        print(line)
 
-    assert line == '1 3 6 7 9'
+def test_mul_simple():
+    data = "mul(44,46)"
+    splitted = data.split("mul(")
+    numbers = splitted[1].rstrip(")").split(",")
+    product = int(numbers[0]) * int(numbers[1])
+    assert product == 2024
+
+def test_regex():
+    data = "mul(44,46)"
+    p = re.compile(r"mul\(\d+,\d+\)")
+    result = p.findall(data)
+    assert result == ['mul(44,46)']
+
+def test_regex_test_data():
+    data = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+    p = re.compile(r"mul\(\d+,\d+\)")
+    result = p.findall(data)
+    assert result == ['mul(2,4)', 'mul(5,5)', 'mul(11,8)', 'mul(8,5)']
+
+def test_regex_test_data_multiply():
+    sum_of_products = 0
+    data = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+    p = re.compile(r"mul\(\d+,\d+\)")
+    result = p.findall(data)
+    for instruction in result:
+        splitted = instruction.split("mul(")
+        numbers = splitted[1].rstrip(")").split(",")
+        product = int(numbers[0]) * int(numbers[1])
+        sum_of_products += product
+    assert sum_of_products == 161
