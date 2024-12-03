@@ -22,8 +22,8 @@ def test_regex_test_data():
     assert result == ['mul(2,4)', 'mul(5,5)', 'mul(11,8)', 'mul(8,5)']
 
 def test_regex_test_data_multiply():
-    sum_of_products = 0
     data = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+    sum_of_products = 0
     p = re.compile(r"mul\(\d+,\d+\)")
     result = p.findall(data)
     for instruction in result:
@@ -32,3 +32,17 @@ def test_regex_test_data_multiply():
         product = int(numbers[0]) * int(numbers[1])
         sum_of_products += product
     assert sum_of_products == 161
+
+def test_regex_full_data_multiply():
+    with open("aoc_data_03.txt", "r") as f:
+        data = f.read()
+        sum_of_products = 0
+        p = re.compile(r"mul\(\d+,\d+\)")
+        result = p.findall(data)
+        for instruction in result:
+            splitted = instruction.split("mul(")
+            numbers = splitted[1].rstrip(")").split(",")
+            product = int(numbers[0]) * int(numbers[1])
+            sum_of_products += product
+
+        assert sum_of_products == 161
