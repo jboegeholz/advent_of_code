@@ -70,7 +70,11 @@ def rules_to_dict(rules):
     "input, expected",
     [
         ("75,47,61,53,29", True),
+        ("97,61,53,29,13", True),
+        ("75,29,13", True),
         ("75,97,47,61,53", False),
+        ("61,13,29", False),
+        ("97,13,75,29,47", False),
 
     ]
 )
@@ -80,7 +84,7 @@ def test_is_correct_order(input, expected):
     correct_order = True
     pages = [int(x) for x in input.split(",")]
     for i, page in enumerate(pages):
-        for j in range(len(pages)):
+        for j in range(i+1,len(pages)):
             if page in rules_dict:
                 for rule in rules_dict[page]:
                     if rule == pages[j]:
