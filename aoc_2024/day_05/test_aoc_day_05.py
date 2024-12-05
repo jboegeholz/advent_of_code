@@ -120,4 +120,4 @@ def test_get_sum_of_midlle_pages_full():
             middle_page = pages[len(pages) // 2]
 
         sum_of_middle_pages += middle_page
-    assert sum_of_middle_pages == 0
+    assert sum_of_middle_pages == 5091
