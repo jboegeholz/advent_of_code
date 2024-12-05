@@ -81,18 +81,43 @@ def rules_to_dict(rules):
 def test_is_correct_order(input, expected, expected_middle_page):
     rules = data.split("\n\n")[0].split("\n")
     rules_dict = rules_to_dict(rules)
-    correct_order = True
+
     middle_page = 0
     pages = [int(x) for x in input.split(",")]
+    correct_order = check_correct_order(pages, rules_dict)
+    if correct_order:
+        middle_page = pages[len(pages)//2]
+    assert correct_order == expected
+    assert expected_middle_page == middle_page
+
+
+def check_correct_order(pages, rules_dict):
+    correct_order = True
     for i, page in enumerate(pages):
-        for j in range(i+1,len(pages)):
+        for j in range(i + 1, len(pages)):
             if page in rules_dict:
                 for rule in rules_dict[page]:
                     if rule == pages[j]:
                         correct_order = False
                         break
             break
-    if correct_order:
-        middle_page = pages[len(pages)//2]
-    assert correct_order == expected
-    assert expected_middle_page == middle_page
+    return correct_order
+
+
+def test_get_sum_of_midlle_pages_full():
+    with open("./aoc_data_05.txt", "r") as f:
+        data = f.read()
+    lines  = data.split("\n\n")[1].split("\n")
+
+    rules = data.split("\n\n")[0].split("\n")
+    rules_dict = rules_to_dict(rules)
+    sum_of_middle_pages = 0
+    for line in lines:
+        middle_page = 0
+        pages = [int(x) for x in line.split(",")]
+        correct_order = check_correct_order(pages, rules_dict)
+        if correct_order:
+            middle_page = pages[len(pages) // 2]
+
+        sum_of_middle_pages += middle_page
+    assert sum_of_middle_pages == 0
