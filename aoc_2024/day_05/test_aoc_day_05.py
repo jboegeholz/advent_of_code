@@ -67,21 +67,22 @@ def rules_to_dict(rules):
 
 
 @pytest.mark.parametrize(
-    "input, expected",
+    "input, expected, expected_middle_page",
     [
-        ("75,47,61,53,29", True),
-        ("97,61,53,29,13", True),
-        ("75,29,13", True),
-        ("75,97,47,61,53", False),
-        ("61,13,29", False),
-        ("97,13,75,29,47", False),
+        ("75,47,61,53,29", True, 61),
+        ("97,61,53,29,13", True, 53),
+        ("75,29,13", True, 29),
+        ("75,97,47,61,53", False, 0),
+        ("61,13,29", False, 0),
+        ("97,13,75,29,47", False, 0),
 
     ]
 )
-def test_is_correct_order(input, expected):
+def test_is_correct_order(input, expected, expected_middle_page):
     rules = data.split("\n\n")[0].split("\n")
     rules_dict = rules_to_dict(rules)
     correct_order = True
+    middle_page = 0
     pages = [int(x) for x in input.split(",")]
     for i, page in enumerate(pages):
         for j in range(i+1,len(pages)):
@@ -91,5 +92,7 @@ def test_is_correct_order(input, expected):
                         correct_order = False
                         break
             break
-
+    if correct_order:
+        middle_page = pages[len(pages)//2]
     assert correct_order == expected
+    assert expected_middle_page == middle_page
