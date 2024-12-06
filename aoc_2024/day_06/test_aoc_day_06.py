@@ -28,16 +28,28 @@ def test_move_upward():
 @pytest.mark.parametrize(
     "input_data, expected",
     [
-        ("..\n"
-         ".^", 2),
+      #  ([['.', '.'], ['.', '^']], [['.', '^'], ['.', 'X']]),
+        ([['.', '.'], ['>', '.']], [['.', '.'], ['X', '>']]),
 
 
     ]
 )
 def test_is_correct_order(input_data, expected):
-    converted = convert_input_to_2d_array(input_data)
+    map = input_data
+    rows = len(map)
+    columns = len(map[0])
+    for i in range(rows):
+        for j in range(columns):
+            if map[i][j] == '^':
+                map[i][j] = 'X'
+                if i < rows:
+                    map[i-1][j] = '^'
+            if map[i][j] == '>':
+                map[i][j] = 'X'
+                if j < columns-1:
+                    map[i][j+1] = '>'
 
-    assert input_data == expected
+    assert map == expected
 
 
 
