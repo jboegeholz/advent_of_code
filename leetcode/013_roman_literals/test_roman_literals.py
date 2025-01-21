@@ -16,6 +16,7 @@ import pytest
         ("XL", 40),
         ("XC", 90),
         ("CD", 400),
+        ("CM", 900),
     ]
 )
 def test_roman_literals(roman, expected):
@@ -32,6 +33,8 @@ def roman_literals(roman):
         roman = roman.replace("XC", "LXXXX")
     if "CD" in roman:
         roman = roman.replace("CD", "CCCC")
+    if "CM" in roman:
+        roman = roman.replace("CM", "DCCCC")
     for c in roman:
         if c == "I":
             num += 1
