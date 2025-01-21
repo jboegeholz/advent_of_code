@@ -6,6 +6,7 @@ import pytest
         ("I", 1),
         ("II", 2),
         ("III", 3),
+        ("IV", 4),
     ]
 )
 def test_roman_literals(roman, expected):
@@ -14,6 +15,8 @@ def test_roman_literals(roman, expected):
 
 def roman_literals(roman):
     num = 0
+    if "IV" in roman:
+        roman = roman.replace("IV", "IIII")
     for c in roman:
         if c == "I":
             num += 1
