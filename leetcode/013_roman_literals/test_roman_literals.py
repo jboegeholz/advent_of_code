@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.parametrize(
     "roman, expected",
     [
@@ -26,4 +27,6 @@ def roman_literals(roman):
             num += 10
         if c == "L":
             num += 50
+        if c == "C":
+            num += 100
     return num
