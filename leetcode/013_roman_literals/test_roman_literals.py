@@ -10,6 +10,9 @@ import pytest
         ("IV", 4),
         ("X", 10),
         ("L", 50),
+        ("C", 100),
+        ("D", 500),
+        ("M", 1000),
     ]
 )
 def test_roman_literals(roman, expected):
@@ -29,4 +32,8 @@ def roman_literals(roman):
             num += 50
         if c == "C":
             num += 100
+        if c == "D":
+            num += 500
+        if c == "M":
+            num += 1000
     return num
