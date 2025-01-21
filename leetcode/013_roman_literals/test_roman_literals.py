@@ -8,6 +8,7 @@ import pytest
         ("II", 2),
         ("III", 3),
         ("IV", 4),
+        ("V", 5),
         ("X", 10),
         ("L", 50),
         ("C", 100),
@@ -17,6 +18,8 @@ import pytest
         ("XC", 90),
         ("CD", 400),
         ("CM", 900),
+        ("LVIII", 58),
+        ("MCMXCIV", 1994),
     ]
 )
 def test_roman_literals(roman, expected):
@@ -38,6 +41,8 @@ def roman_literals(roman):
     for c in roman:
         if c == "I":
             num += 1
+        if c == "V":
+            num += 5
         if c == "X":
             num += 10
         if c == "L":
