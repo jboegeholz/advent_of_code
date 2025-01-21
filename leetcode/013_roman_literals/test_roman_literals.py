@@ -13,9 +13,8 @@ def test_roman_literals(roman, expected):
 
 
 def roman_literals(roman):
-    if roman == "I":
-        return 1
-    if roman == "II":
-        return 2
-    if roman == "III":
-        return 3
+    num = 0
+    for c in roman:
+        if c == "I":
+            num += 1
+    return num
