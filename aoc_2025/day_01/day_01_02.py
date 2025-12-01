@@ -5,12 +5,16 @@ if __name__ == '__main__':
         lines = f.readlines()
         assert len(lines) == 4392
         for line in lines:
+            rot_value = int(line[1:])
             if line[0] == "L":
-                rot_value = int(line[1:])
                 dial_value = dial_value - rot_value
+                if dial_value < 0:
+                    zero_counter += 1
                 dial_value = dial_value % 100
             elif line[0] == "R":
                 dial_value = dial_value + rot_value
+                if dial_value > 100:
+                    zero_counter += 1
                 dial_value = dial_value % 100
             else:
                 print("should not happen")
@@ -18,4 +22,4 @@ if __name__ == '__main__':
                 zero_counter += 1
             print(dial_value)
     print(zero_counter)
-    assert zero_counter == 1092
+    assert zero_counter == 5530
