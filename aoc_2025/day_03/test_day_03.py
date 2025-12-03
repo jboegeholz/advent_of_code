@@ -8,7 +8,13 @@ import pytest
         ("987654321111111", 98),
         ("811111111111119", 89),
         ("234234234234278", 78),
-        ("818181911112111", 92)
+        ("818181911112111", 92),
+        ("12", 12),
+        ("21", 21),
+        ("55", 55),
+        ("55", 55),
+        ("445", 45),
+        ("12345", 45),
     ]
 )
 def test_day_03_one_line_2(data, expected):
@@ -16,14 +22,15 @@ def test_day_03_one_line_2(data, expected):
     highest_joltage = 0
     second_highest_joltage = 0
     for j in range(len(line)):
-        if j == len(line) - 1 and int(line[j]) > second_highest_joltage:
-            second_highest_joltage = int(line[j])
+        v = int(line[j])
+        if j == len(line) - 1 and v > second_highest_joltage:
+            second_highest_joltage = v
             break
-        i = int(line[j])
-        if i > highest_joltage:
-            highest_joltage = i
-        if second_highest_joltage < i < highest_joltage:
-            second_highest_joltage = i
+        if v > highest_joltage:
+            highest_joltage = v
+        if second_highest_joltage < v < highest_joltage:
+            second_highest_joltage = v
+
 
     maximum_joltage = str(highest_joltage) + str(second_highest_joltage)
     assert int(maximum_joltage) == expected
@@ -38,16 +45,17 @@ def test_day_03_full_data():
         highest_joltage = 0
         second_highest_joltage = 0
         for j in range(len(line)):
-            if j == len(line) - 1 and int(line[j]) > second_highest_joltage:
-                second_highest_joltage = int(line[j])
+            v = int(line[j])
+            if j == len(line) - 1 and v > second_highest_joltage:
+                second_highest_joltage = v
                 break
-            i = int(line[j])
-            if i > highest_joltage:
-                highest_joltage = i
-            if second_highest_joltage < i < highest_joltage:
-                second_highest_joltage = i
+            if v > highest_joltage:
+                highest_joltage = v
+            if second_highest_joltage < v < highest_joltage:
+                second_highest_joltage = v
 
         maximum_joltage = str(highest_joltage) + str(second_highest_joltage)
+        print(maximum_joltage)
         accumulated_joltage += int(maximum_joltage)
 
     assert accumulated_joltage == 17416
